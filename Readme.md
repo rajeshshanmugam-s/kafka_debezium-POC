@@ -1,55 +1,55 @@
-Kafka Debezium POC (Change Data Capture)
+# Kafka Debezium POC (Change Data Capture)
 
-Clone the Repo
+* Clone the Repo
 
-In [docker-compose.yml](docker-compose.yml) change the line number 28 `KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092` to your Public IP. 
+* In [docker-compose.yml](docker-compose.yml) change the line number 28 `KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092` to your Public IP. 
 
-Run `doceker-compose up -d`
+* Run `doceker-compose up -d`
 
-Check all the five services are running. 
+* Check all the five services are running. 
 
-There is a SQL script under [scripts](scripts/) folder, It will be executed when the containers are starting. 
+* There is a SQL script under [scripts](scripts/) folder, It will be executed when the containers are starting. 
 
-Enter the postgres container and check for the Table `shipments` if it is not there create the table based on the [script](scripts/) 
+* Enter the postgres container and check for the Table `shipments` if it is not there create the table based on the [script](scripts/) 
 
-Alternate solution (Remove the postgres volume and build again)
+     - Alternate solution (Remove the postgres volume and build again)
 
-Enter into the Debezium Connect container and the run the below command
-    
-    curl -H 'Content-Type: application/json' debezium:8083/connectors --data '
-    {
-    "name": "shipments-connector",  
-    "config": {
-        "connector.class": "io.debezium.connector.postgresql.PostgresConnector", 
-        "plugin.name": "pgoutput",
-        "database.hostname": "postgres", 
-        "database.port": "5432", 
-        "database.user": "postgresuser", 
-        "database.password": "postgrespw", 
-        "database.dbname" : "shipment_db", 
-        "database.server.name": "postgres", 
-        "table.include.list": "public.shipments" }
-    }'
+* Enter into the Debezium Connect container and the run the below command
+       
+        curl -H 'Content-Type: application/json' debezium:8083/connectors --data '
+        {
+        "name": "shipments-connector",  
+        "config": {
+            "connector.class": "io.debezium.connector.postgresql.PostgresConnector", 
+            "plugin.name": "pgoutput",
+            "database.hostname": "postgres", 
+            "database.port": "5432", 
+            "database.user": "postgresuser", 
+            "database.password": "postgrespw", 
+            "database.dbname" : "shipment_db", 
+            "database.server.name": "postgres", 
+            "table.include.list": "public.shipments" }
+        }'
 
-Now Postgres DB is connected to the Kafka Via Debezium connect. 
+* Now Postgres DB is connected to the Kafka Via Debezium connect. 
 
-For Kcat Monioring: 
+* For Kcat Monioring: 
 
-Run in a new Terminal: 
+    * Run in a new Terminal: 
 
-    docker run --tty --network kafka_tutorial_default confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -s key=s -s value=avro -r http://schema-registry:8081 -t postgres.public.shipments
+            docker run --tty --network kafka_tutorial_default confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -s key=s -s value=avro -r http://schema-registry:8081 -t postgres.public.shipments
 
-For Python clients: 
-- Create a virtualenv 
-- Install the Requirements from requirements.txt
+* For Python clients: 
+    - Create a virtualenv 
+    - Install the Requirements from requirements.txt
 
-For Python consumer:
+* For Python consumer:
 
 #### TODO: In python consumer output is in Avro format, need to deserialize using Avro schema. 
     
     python consumer.py
 
-To Update the PostgresDB: - 
+* To Update the PostgresDB: - 
     
     python pg_update.py
 
