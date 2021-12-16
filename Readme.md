@@ -4,13 +4,14 @@
 
 * In [docker-compose.yml](docker-compose.yml) change the line number 28 `KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092` to your Public IP. 
 
-* Run `doceker-compose up -d`
+* Run `docker-compose up -d`
 
 * Check all the five services are running. 
 
 * There is a SQL script under [scripts](scripts/) folder, It will be executed when the containers are starting. 
 
 * Enter the postgres container and check for the Table `shipments` if it is not there create the table based on the [script](scripts/) 
+     - To enter into the container `docker exec -it <<containerid>> bash` then `psql -U postgresuser -d shipment_db`
 
      - Alternate solution (Remove the postgres volume and build again)
 
@@ -41,7 +42,7 @@
 
 * For Python clients: 
     - Create a virtualenv 
-    - Install the Requirements from requirements.txt
+    - Install the Requirements from requirements.txt  `pip install -r requirements.txt`
 
 * For Python consumer:
 
