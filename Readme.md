@@ -38,7 +38,7 @@
 
     * Run in a new Terminal: 
 
-            docker run --tty --network kafka_tutorial_default confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -s key=s -s value=avro -r http://schema-registry:8081 -t postgres.public.shipments
+            docker run --tty --network kafka_debezium-poc_default confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -s key=s -s value=avro -r http://schema-registry:8081 -t postgres.public.shipments
 
 * For Python clients: 
     - Create a virtualenv 
