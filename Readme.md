@@ -15,7 +15,7 @@
 
      - Alternate solution (Remove the postgres volume and build again)
 
-* Enter into the Debezium Connect container and the run the below command
+* Enter into the Debezium Connect container and the run the below command, If a external postgres needs to be connected change the value of database.hostname to the public IP of the DB. 
        
         curl -H 'Content-Type: application/json' debezium:8083/connectors --data '
         {
@@ -32,7 +32,15 @@
             "table.include.list": "public.shipments" }
         }'
 
-* Now Postgres DB is connected to the Kafka Via Debezium connect. 
+For connecting multiple connectors for different consumers add `slot.name: otherslotname` Default will be `debezium`. Check the [reference](https://www.postgresql.org/docs/10/logicaldecoding-explanation.html)
+
+To check existing slots in a DB. 
+
+RUN: `select * from pg_catalog.pg_replication_slots`
+
+* Hurray! Postgres DB is connected to the Kafka Via Debezium connect. 
+
+
 
 * For Kcat Monioring: 
 
@@ -64,4 +72,5 @@ Reference:
 - https://docs.confluent.io/clients-confluent-kafka-python/current/overview.html
 - https://medium.com/event-driven-utopia/a-visual-introduction-to-debezium-32563e23c6b8
 - https://medium.com/event-driven-utopia/configuring-debezium-to-capture-postgresql-changes-with-docker-compose-224742ca5372
+- https://www.postgresql.org/docs/10/logicaldecoding-explanation.html
 
