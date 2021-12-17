@@ -52,7 +52,9 @@
 
 #### TODO: In python consumer output is in Avro format, need to deserialize using Avro schema. 
     
-    python consumer.py
+    python consumer.py    
+
+To run the consumer from a different host. Change the argument bootstrap_servers to the public IP of the kafka host in line no:6 of consumer.py 
 
 * To Update the PostgresDB:
 
