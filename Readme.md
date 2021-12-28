@@ -15,6 +15,8 @@
 
      - Alternate solution (Remove the postgres volume and build again)
 
+* Change the wal_level to `logical` in postgresql.conf else it will throw an error `Postgres server wal_level property must be \"logical\" but is: replica` in the future steps. 
+
 * Enter into the Debezium Connect container and the run the below command, If a external postgres needs to be connected change the value of database.hostname to the public IP of the DB. 
        
         curl -H 'Content-Type: application/json' debezium:8083/connectors --data '
